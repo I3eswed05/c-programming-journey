@@ -2,53 +2,50 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_paths.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ialausud <ialausud@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: ialausud                                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 19:24:33 by ialausud          #+#    #+#             */
-/*   Updated: 2025/11/27 23:14:04 by ialausud         ###   ########.fr       */
+/*   Updated: 2025/11/30 21:00:00 by ialausud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static int find_player(char **map, int *px, int *py)
+static int	find_player(char **map, int *px, int *py)
 {
-    int i;
-    int j;
+	int	i;
+	int	j;
 
-    i = 0;
-    j = 0;
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            if (map[i][j] == 'P')
-            {
-                *px = i;
-                *py = j;
-                return (0);
-            }
-            j++;
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == 'P')
+			{
+				*px = i;
+				*py = j;
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }
 
-static void    flood_fill(char **map, int x, int y, int rows, int cols)
+static void	flood_fill(char **map, int x, int y, int rows, int cols)
 {
-    if (x < 0 || x >= rows || y < 0 || y >= cols)
-        return ;
-    if (map[x][y] == '1' || map[x][y] == 'V')
-        return ;
-    map[x][y] = 'V';
-    flood_fill(map, x + 1, y, rows, cols);
-    flood_fill(map, x - 1, y, rows, cols);
-    flood_fill(map, x, y + 1, rows, cols);
-    flood_fill(map, x, y - 1, rows, cols);
-    
+	if (x < 0 || x >= rows || y < 0 || y >= cols)
+		return ;
+	if (map[x][y] == '1' || map[x][y] == 'V')
+		return ;
+	map[x][y] = 'V';
+	flood_fill(map, x + 1, y, rows, cols);
+	flood_fill(map, x - 1, y, rows, cols);
+	flood_fill(map, x, y + 1, rows, cols);
+	flood_fill(map, x, y - 1, rows, cols);
 }
 
 static int	get_rows(char **map)
@@ -68,49 +65,36 @@ static int	get_cols(char **map)
 	return (ft_strlen(map[0]));
 }
 
-int check_paths(char **map)
+int	check_paths(char **map)
 {
-    char    **tmp;
-    int     rows;
-    int     cols;
-    int     px;
-    int     py;
-    int     i;
-    int     j;
+	char	**tmp;
+	int		rows;
+	int		cols;
+	int		px;
+	int		py;
+	int		i;
+	int		j;
 
-    tmp = copy_map(map);
-    rows = get_rows(tmp);
-    cols = get_cols(tmp);
-    find_player(tmp, &px, &py);
-    flood_fill(tmp, px, py, rows, cols);
-
-    i = 0;
-    while (tmp[i])
-    {
-        j = 0;
-        while (tmp[i][j])
-        {
-            if (tmp[i][j] == 'C' || tmp[i][j] == 'E')
-                return (0);
-            j++;
-        }
-        i++;
-    }
-    free_map(tmp);
-    return (1);
-}
-
-void	free_map(char **map)
-{
-	int	i;
-
-	if (!map)
-		return;
+	tmp = copy_map(map);
+	if (!tmp)
+		return (0);
+	rows = get_rows(tmp);
+	cols = get_cols(tmp);
+	if (!find_player(tmp, &px, &py))
+		return (free_map(tmp), 0);
+	flood_fill(tmp, px, py, rows, cols);
 	i = 0;
-	while (map[i])
+	while (tmp[i])
 	{
-		free(map[i]);
+		j = 0;
+		while (tmp[i][j])
+		{
+			if (tmp[i][j] == 'C' || tmp[i][j] == 'E')
+				return (free_map(tmp), 0);
+			j++;
+		}
 		i++;
 	}
-	free(map);
+	free_map(tmp);
+	return (1);
 }

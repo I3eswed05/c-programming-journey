@@ -4,6 +4,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <stddef.h>
 # include "mlx.h"
 
 # ifndef BUFFER_SIZE
@@ -30,8 +31,6 @@ typedef struct s_game
 	int		cols;
 	int		player_x;
 	int		player_y;
-	int		exit_x;
-	int		exit_y;
 	int		total_c;
 	int		collected;
 	int		moves;
@@ -47,7 +46,6 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
-void	ft_putnbr(int n);
 
 /* map / validation */
 int		is_ber(char *map);
@@ -65,11 +63,11 @@ void	init_game(t_game *g, char **map);
 int		load_images(t_game *g);
 void	render_map(t_game *g);
 
-/* controls / movement */
+/* controls */
 int		handle_key(int keycode, t_game *g);
-void	move_player(t_game *g, int dx, int dy);
-
-/* close */
 int		close_window(t_game *g);
+
+/* move / collectibles */
+void	move_player(t_game *g, int dx, int dy);
 
 #endif

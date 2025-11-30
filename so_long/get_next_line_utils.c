@@ -6,16 +6,16 @@
 /*   By: ialausud <ialausud@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/31 16:30:37 by ialausud          #+#    #+#             */
-/*   Updated: 2025/11/27 19:39:13 by ialausud         ###   ########.fr       */
+/*   Updated: 2025/11/28 18:25:36 by ialausud         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 /* ------------------------------- ft_strlen ------------------------------- */
-size_t	ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
-	size_t	i;
+	int	i;
 
 	if (!str)
 		return (0);
